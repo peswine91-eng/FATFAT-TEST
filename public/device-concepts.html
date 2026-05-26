@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafeSignal — Elderly Check-In Device Concepts</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green:  #22c55e;
+    --amber:  #f59e0b;
+    --red:    #ef4444;
+    --blue:   #3b82f6;
+    --dark:   #111827;
+    --mid:    #374151;
+    --light:  #f9fafb;
+    --card:   #ffffff;
+    --border: #e5e7eb;
+    --shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f3f4f6;
+    color: var(--dark);
+    line-height: 1.6;
+  }
+
+  header {
+    background: var(--dark);
+    color: white;
+    padding: 48px 40px 36px;
+    text-align: center;
+  }
+  header h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; }
+  header p  { font-size: 1.05rem; color: #9ca3af; margin-top: 8px; }
+  .badge {
+    display: inline-block;
+    background: var(--green);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 99px;
+    margin-bottom: 14px;
+  }
+
+  section { max-width: 1100px; margin: 0 auto; padding: 56px 24px; }
+  h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+  h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+  .sub { color: #6b7280; font-size: 0.95rem; margin-bottom: 36px; }
+
+  /* ─── HOW IT WORKS FLOW ─────────────────────────────── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 32px 0;
+  }
+  .flow-step {
+    flex: 1;
+    min-width: 150px;
+    background: white;
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .flow-step .icon { font-size: 2.4rem; margin-bottom: 10px; }
+  .flow-step .label { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; }
+  .flow-step .desc { font-size: 0.9rem; margin-top: 6px; }
+  .flow-arrow {
+    font-size: 1.4rem;
+    color: #9ca3af;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+  .step-num {
+    position: absolute;
+    top: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--dark);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ─── PRODUCT COMPARISON TABLE ──────────────────────── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    font-size: 0.9rem;
+  }
+  .compare-table th {
+    background: var(--dark);
+    color: white;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .compare-table th.ours { background: var(--green); }
+  .compare-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: #f9fafb; }
+  .tick  { color: var(--green); font-weight: 800; font-size: 1.1rem; }
+  .cross { color: var(--red);   font-weight: 800; font-size: 1.1rem; }
+  .part  { color: var(--amber); font-weight: 800; font-size: 1.1rem; }
+  .feature-col { font-weight: 600; }
+
+  /* ─── DEVICE CONCEPTS ───────────────────────────────── */
+  .concepts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 32px;
+  }
+  .concept-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .concept-card.recommended {
+    border: 3px solid var(--green);
+  }
+  .recommended-tag {
+    background: var(--green);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    text-align: center;
+  }
+  .concept-visual {
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .concept-info { padding: 24px; }
+  .concept-info h3 { font-size: 1.2rem; }
+  .concept-info .tagline { color: #6b7280; font-size: 0.88rem; margin: 4px 0 16px; }
+  .spec-list { list-style: none; }
+  .spec-list li {
+    font-size: 0.88rem;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .spec-list li:last-child { border-bottom: none; }
+  .spec-list li::before { content: "→"; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+  /* ── Concept 1: Kitchen Hub (Puck) ── */
+  .puck-visual { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); }
+  .puck {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: #1e293b;
+    box-shadow:
+      0 0 0 12px #273549,
+      0 0 0 20px #1e293b,
+      0 8px 32px rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .puck-btn {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #4ade80, #16a34a);
+    box-shadow: 0 0 20px rgba(34,197,94,0.6), inset 0 2px 4px rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .puck-btn span { font-size: 2.2rem; }
+  .puck-ring {
+    position: absolute;
+    width: 148px; height: 148px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: var(--green);
+    border-right-color: var(--green);
+    animation: spin 3s linear infinite;
+    opacity: 0.5;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .puck-label {
+    position: absolute;
+    bottom: 24px;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .led-strip {
+    position: absolute;
+    bottom: 45px;
+    display: flex; gap: 5px;
+  }
+  .led { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .led.off { background: #374151; box-shadow: none; }
+
+  /* ── Concept 2: Frame / Display ── */
+  .frame-visual { background: linear-gradient(135deg, #fdf4ff 0%, #ede9fe 100%); }
+  .frame-device {
+    width: 220px; height: 160px;
+    background: #1c1917;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 6px #292524;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .frame-screen {
+    flex: 1;
+    background: #0f172a;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px;
+    padding: 12px;
+  }
+  .frame-time { color: white; font-size: 1.8rem; font-weight: 300; letter-spacing: 2px; }
+  .frame-date { color: #94a3b8; font-size: 0.7rem; letter-spacing: 1px; }
+  .frame-status {
+    background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.4);
+    color: var(--green);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    margin-top: 4px;
+  }
+  .frame-footer {
+    height: 36px;
+    background: #292524;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+  }
+  .frame-btn-small {
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+  }
+  .frame-sos { background: var(--red); box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+  .frame-ok  { background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+  .frame-stand {
+    position: absolute;
+    bottom: -18px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 20px;
+    background: #292524;
+    border-radius: 0 0 8px 8px;
+  }
+
+  /* ── Concept 3: Wristband ── */
+  .band-visual { background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%); }
+  .wristband {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .band-body {
+    width: 130px; height: 160px;
+    background: linear-gradient(180deg, #292524 0%, #1c1917 100%);
+    border-radius: 30px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px;
+  }
+  .band-face {
+    width: 90px; height: 90px;
+    background: #0f172a;
+    border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px;
+    border: 1px solid #374151;
+  }
+  .band-time  { color: white; font-size: 1.1rem; font-weight: 300; }
+  .band-icon  { font-size: 1.4rem; }
+  .band-dot   { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .band-strap-top, .band-strap-bot {
+    width: 60px; height: 24px;
+    background: #78350f;
+    border-radius: 4px;
+  }
+  .band-strap-top { border-radius: 4px 4px 0 0; }
+  .band-strap-bot { border-radius: 0 0 4px 4px; }
+
+  /* ─── APP SCREENS ───────────────────────────────────── */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px;
+    margin-top: 32px;
+  }
+  .phone-frame {
+    background: #111;
+    border-radius: 40px;
+    padding: 14px 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25), 0 0 0 1px #222;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+  .phone-notch {
+    width: 60px; height: 12px;
+    background: #111;
+    border-radius: 99px;
+    margin: 0 auto 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .phone-screen {
+    background: white;
+    border-radius: 28px;
+    overflow: hidden;
+    min-height: 420px;
+  }
+  .app-header {
+    padding: 16px 16px 10px;
+    background: var(--dark);
+    color: white;
+  }
+  .app-header .app-title  { font-size: 0.72rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; }
+  .app-header .app-name   { font-size: 1.1rem; font-weight: 800; }
+
+  /* Screen 1: Dashboard */
+  .dash-hero {
+    background: linear-gradient(135deg, #064e3b, #065f46);
+    padding: 20px 16px;
+    text-align: center;
+    color: white;
+  }
+  .status-circle {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 3px solid var(--green);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 2rem;
+    box-shadow: 0 0 20px rgba(34,197,94,0.4);
+  }
+  .status-text { font-size: 1rem; font-weight: 700; }
+  .status-sub  { font-size: 0.72rem; opacity: 0.75; }
+  .dash-cards  { padding: 12px; display: grid; gap: 8px; }
+  .dash-card   { background: #f9fafb; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+  .dash-card .dc-icon { font-size: 1.4rem; }
+  .dash-card .dc-label { font-size: 0.7rem; color: #6b7280; }
+  .dash-card .dc-value { font-size: 0.88rem; font-weight: 700; }
+
+  /* Screen 2: Timeline */
+  .timeline { padding: 14px 16px; }
+  .timeline h4 { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 12px; }
+  .tl-item { display: flex; gap: 10px; margin-bottom: 14px; }
+  .tl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .tl-dot.ok  { background: var(--green); }
+  .tl-dot.miss { background: var(--red); }
+  .tl-dot.pending { background: var(--amber); }
+  .tl-content {}
+  .tl-time  { font-size: 0.68rem; color: #9ca3af; }
+  .tl-desc  { font-size: 0.82rem; font-weight: 600; }
+
+  /* Screen 3: Alert */
+  .alert-screen { padding: 16px; }
+  .alert-banner {
+    background: #fef2f2;
+    border: 2px solid var(--red);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .alert-banner .ab-icon { font-size: 2rem; }
+  .alert-banner .ab-title { font-weight: 800; font-size: 0.95rem; color: var(--red); margin-top: 6px; }
+  .alert-banner .ab-sub   { font-size: 0.78rem; color: #6b7280; margin-top: 4px; }
+  .action-btn {
+    display: block; width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-bottom: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-call   { background: var(--green); color: white; }
+  .btn-send   { background: var(--blue);  color: white; }
+  .btn-911    { background: var(--red);   color: white; }
+  .btn-snooze { background: #f3f4f6; color: var(--dark); }
+
+  /* ─── DIFF SECTION ──────────────────────────────────── */
+  .diff-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 28px;
+  }
+  @media (max-width: 640px) { .diff-grid { grid-template-columns: 1fr; } }
+  .diff-card {
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .diff-card.them { background: #fef2f2; border: 2px solid #fca5a5; }
+  .diff-card.us   { background: #f0fdf4; border: 2px solid #86efac; }
+  .diff-card h3   { font-size: 1rem; margin-bottom: 14px; }
+  .diff-card ul   { list-style: none; display: grid; gap: 8px; }
+  .diff-card ul li { font-size: 0.88rem; padding-left: 22px; position: relative; }
+  .diff-card ul li::before { position: absolute; left: 0; font-weight: 800; }
+  .diff-card.them ul li::before { content: "✗"; color: var(--red); }
+  .diff-card.us   ul li::before { content: "✓"; color: var(--green); }
+
+  /* ─── FOOTER ────────────────────────────────────────── */
+  footer {
+    background: var(--dark);
+    color: #9ca3af;
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 0.82rem;
+  }
+  footer strong { color: white; }
+
+  /* responsive */
+  @media (max-width: 700px) {
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Product Concept</div>
+  <h1>SafeSignal</h1>
+  <p>An always-on home check-in hub for elderly independence — no smartphone, no charging, no stigma</p>
+</header>
+
+<!-- ══════════════════════════════════════════ HOW IT WORKS -->
+<section>
+  <h2>How It Works</h2>
+  <p class="sub">The full loop — from normal day to emergency response — in 6 clear steps</p>
+
+  <div class="flow">
+
+    <div class="flow-step">
+      <div class="step-num">1</div>
+      <div class="icon">🌅</div>
+      <div class="label">Daily Activation</div>
+      <div class="desc">Device glows green each morning at a set time (e.g. 8 am). Senior just needs to <strong>press the button once</strong> — "I'm okay."</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-step">
+      <div class="step-num">2</div>
+      <div class="icon">✅</div>
+      <div class="label">Check-In Sent</div>
+      <div class="desc">Signal is sent instantly via 4G LTE cellular to the cloud. Family app shows <strong>"Mum checked in — 8:14am"</strong>.</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-step">
+      <div class="step-num">3</div>
+      <div class="icon">⏰</div>
+      <div class="label">Missed Window</div>
+      <div class="desc">If no check-in by <strong>9:30am</strong>, the device speaks aloud — "Would you like to check in?" and glows amber.</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-step">
+      <div class="step-num">4</div>
+      <div class="icon">📲</div>
+      <div class="label">Family Alert</div>
+      <div class="desc">Still no response after 15 min? Family receive a <strong>push notification + SMS</strong> simultaneously. Escalation ladder begins.</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-step">
+      <div class="step-num">5</div>
+      <div class="icon">🆘</div>
+      <div class="label">SOS Button</div>
+      <div class="desc">At any time, <strong>long-press 3 seconds</strong> to trigger an immediate SOS — calls family first, then emergency services if unanswered.</div>
+    </div>
+    <div class="flow-arrow">→</div>
+
+    <div class="flow-step">
+      <div class="step-num">6</div>
+      <div class="icon">📞</div>
+      <div class="label">Two-Way Call</div>
+      <div class="desc">Family can <strong>call back through the device</strong> — it has a built-in speaker + mic. No phone needed by the senior.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ COMPARISON -->
+<section style="background: white; max-width: 100%; padding: 56px 0;">
+<div style="max-width: 1100px; margin: 0 auto; padding: 0 24px;">
+  <h2>How It Compares to What Already Exists</h2>
+  <p class="sub">Every existing product has a critical gap. SafeSignal is designed to fill all of them simultaneously.</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Bay Alarm / Medical Guardian</th>
+        <th>GPS Tracker (SecuLife/AngelSense)</th>
+        <th>Check-In App (Snug/AssureOkay)</th>
+        <th>GrandPad Tablet</th>
+        <th class="ours">SafeSignal Hub</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="feature-col">No smartphone required</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="cross">✗</span> Needs app</td>
+        <td><span class="cross">✗</span> App required</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="tick">✓</span> No phone at all</td>
+      </tr>
+      <tr>
+        <td class="feature-col">No daily charging needed</td>
+        <td><span class="cross">✗</span> Daily charge</td>
+        <td><span class="cross">✗</span> Daily charge</td>
+        <td><span class="tick">✓</span> Phone charge</td>
+        <td><span class="cross">✗</span> Wireless charge</td>
+        <td><span class="tick">✓</span> Plugged in always</td>
+      </tr>
+      <tr>
+        <td class="feature-col">No wearable required</td>
+        <td><span class="cross">✗</span> Must wear it</td>
+        <td><span class="cross">✗</span> Must wear it</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="tick">✓</span> Stays home</td>
+      </tr>
+      <tr>
+        <td class="feature-col">Works without Wi-Fi</td>
+        <td><span class="tick">✓</span> LTE</td>
+        <td><span class="tick">✓</span> LTE</td>
+        <td><span class="cross">✗</span> Needs data</td>
+        <td><span class="tick">✓</span> 4G</td>
+        <td><span class="tick">✓</span> Built-in LTE SIM</td>
+      </tr>
+      <tr>
+        <td class="feature-col">Passive daily check-in (auto-alert if missed)</td>
+        <td><span class="cross">✗</span> Emergency only</td>
+        <td><span class="cross">✗</span> Emergency only</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="tick">✓</span> Core feature</td>
+      </tr>
+      <tr>
+        <td class="feature-col">Two-way voice through device</td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="tick">✓</span> Some models</td>
+        <td><span class="cross">✗</span></td>
+        <td><span class="tick">✓</span></td>
+        <td><span class="tick">✓</span></td>
+      </tr>
+      <tr>
+        <td class="feature-col">Designed to not look medical</td>
+        <td><span class="cross">✗</span> Pendant stigma</td>
+        <td><span class="cross">✗</span> Tracker stigma</td>
+        <td><span class="tick">✓</span> App only</td>
+        <td><span class="part">~</span> Looks like tablet</td>
+        <td><span class="tick">✓</span> Home appliance look</td>
+      </tr>
+      <tr>
+        <td class="feature-col">Price (device)</td>
+        <td>$0 (lease) – $30</td>
+        <td>$30 – $80</td>
+        <td>$0</td>
+        <td>$299</td>
+        <td><strong>$79 – $99</strong></td>
+      </tr>
+      <tr>
+        <td class="feature-col">Monthly cost</td>
+        <td>$25 – $40/mo</td>
+        <td>$20 – $40/mo</td>
+        <td>$5 – $20/mo</td>
+        <td>$40/mo</td>
+        <td><strong>$6 – $9/mo</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════ WHAT MAKES IT DIFFERENT -->
+<section>
+  <h2>What Makes SafeSignal Different</h2>
+  <p class="sub">The 4 core problems existing products haven't solved — and how SafeSignal solves each one</p>
+
+  <div class="diff-grid">
+    <div class="diff-card them">
+      <h3>❌ Every Competitor's Problem</h3>
+      <ul>
+        <li>86% of wearables end up in a drawer — they feel like medical devices</li>
+        <li>Smartwatches need daily charging — forgotten by cognitively declining users</li>
+        <li>Check-in apps need a smartphone — 40% of 75+ don't own one</li>
+        <li>GPS trackers only respond to emergencies — no daily wellness routine</li>
+        <li>Medical pendants carry a "I've fallen" social stigma</li>
+        <li>Monthly fees of $30–40 feel expensive for a "just in case" device</li>
+        <li>80% of dangerous falls happen when the wearable isn't being worn</li>
+      </ul>
+    </div>
+    <div class="diff-card us">
+      <h3>✅ SafeSignal's Answer</h3>
+      <ul>
+        <li>Looks like a kitchen appliance (Google Home aesthetic) — zero stigma</li>
+        <li>Plugged into mains power — never needs charging, always ready</li>
+        <li>One physical button — works for anyone, no digital literacy required</li>
+        <li>Daily ritual creates habit — press green = "I'm okay" every morning</li>
+        <li>Passive home monitoring — no wearable means 100% coverage at home</li>
+        <li>$6–9/month SIM plan — 4–5x cheaper than most PERS subscriptions</li>
+        <li>Built-in speaker = family can call back through the device directly</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ DEVICE CONCEPTS -->
+<section style="background: #f8fafc; max-width: 100%; padding: 56px 0;">
+<div style="max-width: 1100px; margin: 0 auto; padding: 0 24px;">
+  <h2>3 Physical Design Concepts</h2>
+  <p class="sub">Same technology, three different form factors. Pick one as the hero product or test all three.</p>
+
+  <div class="concepts-grid">
+
+    <!-- Concept 1: The Puck -->
+    <div class="concept-card recommended">
+      <div class="recommended-tag">★ Recommended — Start Here</div>
+      <div class="concept-visual puck-visual">
+        <div class="puck">
+          <div class="puck-ring"></div>
+          <div class="puck-btn"><span>✓</span></div>
+        </div>
+        <div class="led-strip">
+          <div class="led"></div>
+          <div class="led"></div>
+          <div class="led"></div>
+          <div class="led off"></div>
+          <div class="led off"></div>
+        </div>
+        <div class="puck-label">SafeSignal</div>
+      </div>
+      <div class="concept-info">
+        <h3>Concept A — "The Puck"</h3>
+        <p class="tagline">Sits on the kitchen bench. Looks like a Google Home Mini.</p>
+        <ul class="spec-list">
+          <li>120mm diameter, 80mm tall — countertop size</li>
+          <li>Single large tactile button (top centre, 60mm)</li>
+          <li>LED ring: green=OK, amber=check-in due, red=alert</li>
+          <li>Matte white or charcoal finish — looks like a speaker</li>
+          <li>Speaker grille around base for two-way voice</li>
+          <li>USB-C power — plugs into kitchen socket</li>
+          <li>BOM cost: ~$35–50 | Retail: $89</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Concept 2: The Frame -->
+    <div class="concept-card">
+      <div class="concept-visual frame-visual">
+        <div style="position:relative; padding-bottom: 20px;">
+          <div class="frame-device">
+            <div class="frame-screen">
+              <div class="frame-time">08:42</div>
+              <div class="frame-date">TUESDAY · MAY 27</div>
+              <div class="frame-status">✓ CHECKED IN</div>
+            </div>
+            <div class="frame-footer">
+              <div class="frame-btn-small frame-ok">✓</div>
+              <div style="color:#94a3b8;font-size:0.6rem;letter-spacing:1px;">SAFESIGNAL</div>
+              <div class="frame-btn-small frame-sos">SOS</div>
+            </div>
+          </div>
+          <div class="frame-stand"></div>
+        </div>
+      </div>
+      <div class="concept-info">
+        <h3>Concept B — "The Frame"</h3>
+        <p class="tagline">Sits on mantlepiece or bedside table. Shows time + status.</p>
+        <ul class="spec-list">
+          <li>3.5" e-ink or LCD display — shows clock, date, last check-in</li>
+          <li>Two buttons on bottom bezel: green OK + red SOS</li>
+          <li>Landscape orientation with kickstand — bedroom/lounge</li>
+          <li>Can display family photos when idle (feels personal)</li>
+          <li>Optional: shows weather and medication reminders</li>
+          <li>BOM cost: ~$50–65 | Retail: $119</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Concept 3: The Wristband -->
+    <div class="concept-card">
+      <div class="concept-visual band-visual">
+        <div class="wristband">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div class="band-strap-top"></div>
+            <div class="band-body">
+              <div class="band-face">
+                <div class="band-time">08:42</div>
+                <div class="band-dot"></div>
+                <div class="band-icon">✓</div>
+              </div>
+            </div>
+            <div class="band-strap-bot"></div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-info">
+        <h3>Concept C — "The Band"</h3>
+        <p class="tagline">For active seniors or those who travel. Looks like a watch.</p>
+        <ul class="spec-list">
+          <li>Leather or silicone strap — looks like jewellery, not medical</li>
+          <li>30-day battery (e-ink display) — no daily charging anxiety</li>
+          <li>Side button for SOS long-press</li>
+          <li>GPS for location if senior goes out or gets lost</li>
+          <li>Pairs with the same family app as Concept A</li>
+          <li>Best for mild dementia / wandering risk</li>
+          <li>BOM cost: ~$55–70 | Retail: $129</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════ APP SCREENS -->
+<section>
+  <h2>Companion Family App — 3 Key Screens</h2>
+  <p class="sub">The family sees everything. The senior does nothing except press a button.</p>
+
+  <div class="app-grid">
+
+    <!-- Screen 1: Dashboard -->
+    <div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="app-header">
+            <div class="app-title">SafeSignal</div>
+            <div class="app-name">Mum's Dashboard</div>
+          </div>
+          <div class="dash-hero">
+            <div class="status-circle">✓</div>
+            <div class="status-text">All Good</div>
+            <div class="status-sub">Checked in today at 8:14am</div>
+          </div>
+          <div class="dash-cards">
+            <div class="dash-card">
+              <div class="dc-icon">📍</div>
+              <div>
+                <div class="dc-label">Location</div>
+                <div class="dc-value">Home · 12 Oak St</div>
+              </div>
+            </div>
+            <div class="dash-card">
+              <div class="dc-icon">🔋</div>
+              <div>
+                <div class="dc-label">Device</div>
+                <div class="dc-value">Online · Plugged in</div>
+              </div>
+            </div>
+            <div class="dash-card">
+              <div class="dc-icon">📅</div>
+              <div>
+                <div class="dc-label">Streak</div>
+                <div class="dc-value">14 days in a row ✨</div>
+              </div>
+            </div>
+            <div class="dash-card">
+              <div class="dc-icon">👨‍👩‍👧</div>
+              <div>
+                <div class="dc-label">Contacts</div>
+                <div class="dc-value">3 family watchers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:0.8rem;color:#6b7280;margin-top:12px;font-weight:600;">Screen 1 — Live Dashboard</p>
+    </div>
+
+    <!-- Screen 2: Activity Timeline -->
+    <div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="app-header">
+            <div class="app-title">SafeSignal</div>
+            <div class="app-name">Activity Log</div>
+          </div>
+          <div class="timeline" style="padding-top:20px;">
+            <h4>Today — Tuesday 27 May</h4>
+            <div class="tl-item">
+              <div class="tl-dot ok"></div>
+              <div class="tl-content">
+                <div class="tl-time">8:14am</div>
+                <div class="tl-desc">Morning check-in ✓</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot ok"></div>
+              <div class="tl-content">
+                <div class="tl-time">8:17am</div>
+                <div class="tl-desc">Sarah called through device</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot pending"></div>
+              <div class="tl-content">
+                <div class="tl-time">12:00pm</div>
+                <div class="tl-desc">Lunch check-in due</div>
+              </div>
+            </div>
+            <h4 style="margin-top:16px;">Yesterday</h4>
+            <div class="tl-item">
+              <div class="tl-dot ok"></div>
+              <div class="tl-content">
+                <div class="tl-time">8:02am</div>
+                <div class="tl-desc">Morning check-in ✓</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot miss"></div>
+              <div class="tl-content">
+                <div class="tl-time">12:00pm</div>
+                <div class="tl-desc">Missed — family alerted</div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot ok"></div>
+              <div class="tl-content">
+                <div class="tl-time">12:22pm</div>
+                <div class="tl-desc">Mum pressed OK after call</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:0.8rem;color:#6b7280;margin-top:12px;font-weight:600;">Screen 2 — Activity Timeline</p>
+    </div>
+
+    <!-- Screen 3: Alert in progress -->
+    <div>
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="app-header" style="background:#7f1d1d;">
+            <div class="app-title" style="color:#fca5a5;">SafeSignal · ALERT</div>
+            <div class="app-name">Action Required</div>
+          </div>
+          <div class="alert-screen" style="padding-top:20px;">
+            <div class="alert-banner">
+              <div class="ab-icon">⚠️</div>
+              <div class="ab-title">Missed Check-In</div>
+              <div class="ab-sub">Mum hasn't checked in<br>Expected by 9:30am · Now 9:47am</div>
+            </div>
+            <button class="action-btn btn-call">📞 Call Mum Through Device</button>
+            <button class="action-btn btn-send">💬 Send Voice Message to Device</button>
+            <button class="action-btn btn-snooze">I've spoken to her — snooze 2hr</button>
+            <div style="height:1px;background:#e5e7eb;margin:12px 0;"></div>
+            <div style="font-size:0.72rem;color:#6b7280;text-align:center;margin-bottom:10px;">If no response in 10 min, escalate to:</div>
+            <button class="action-btn btn-911">🚨 Dispatch Emergency Services</button>
+          </div>
+        </div>
+      </div>
+      <p style="text-align:center;font-size:0.8rem;color:#6b7280;margin-top:12px;font-weight:600;">Screen 3 — Alert Response</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ TECH STACK -->
+<section style="background:var(--dark);color:white;max-width:100%;padding:56px 0;">
+<div style="max-width:1100px;margin:0 auto;padding:0 24px;">
+  <h2 style="color:white;">Hardware & Tech Stack to Build It</h2>
+  <p style="color:#9ca3af;margin-bottom:32px;">Everything needed to go from idea to working prototype</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;">
+    <div style="background:#1f2937;border-radius:16px;padding:24px;">
+      <div style="font-size:1.6rem;margin-bottom:10px;">🔧</div>
+      <h3 style="color:white;margin-bottom:12px;">Hardware (Prototype)</h3>
+      <ul style="list-style:none;display:grid;gap:6px;font-size:0.85rem;color:#d1d5db;">
+        <li>→ ESP32 microcontroller (~$5)</li>
+        <li>→ SIM7600 4G LTE module (~$18)</li>
+        <li>→ 60mm tactile button, backlit (~$3)</li>
+        <li>→ LED ring / NeoPixel strip (~$4)</li>
+        <li>→ 3W speaker + I2S amp (~$5)</li>
+        <li>→ MEMS mic for voice (~$2)</li>
+        <li>→ USB-C power input (~$1)</li>
+        <li style="color:#22c55e;font-weight:700;">→ Total BOM: ~$38–50</li>
+      </ul>
+    </div>
+    <div style="background:#1f2937;border-radius:16px;padding:24px;">
+      <div style="font-size:1.6rem;margin-bottom:10px;">☁️</div>
+      <h3 style="color:white;margin-bottom:12px;">Backend / Cloud</h3>
+      <ul style="list-style:none;display:grid;gap:6px;font-size:0.85rem;color:#d1d5db;">
+        <li>→ Supabase (Postgres + real-time)</li>
+        <li>→ Twilio (SMS + voice calls)</li>
+        <li>→ Firebase Cloud Messaging (push)</li>
+        <li>→ MQTT over cellular for device comms</li>
+        <li>→ Scheduled jobs: check-in windows</li>
+        <li>→ Escalation state machine (Node.js)</li>
+        <li style="color:#22c55e;font-weight:700;">→ Cloud cost: ~$2–3/device/month</li>
+      </ul>
+    </div>
+    <div style="background:#1f2937;border-radius:16px;padding:24px;">
+      <div style="font-size:1.6rem;margin-bottom:10px;">📱</div>
+      <h3 style="color:white;margin-bottom:12px;">Family App</h3>
+      <ul style="list-style:none;display:grid;gap:6px;font-size:0.85rem;color:#d1d5db;">
+        <li>→ React Native (iOS + Android)</li>
+        <li>→ Push notifications (FCM / APNs)</li>
+        <li>→ Real-time status via WebSocket</li>
+        <li>→ SMS fallback (no app needed)</li>
+        <li>→ WhatsApp Business API option</li>
+        <li>→ No login needed for elderly side</li>
+        <li style="color:#22c55e;font-weight:700;">→ Dev time: ~6–8 weeks MVP</li>
+      </ul>
+    </div>
+    <div style="background:#1f2937;border-radius:16px;padding:24px;">
+      <div style="font-size:1.6rem;margin-bottom:10px;">💰</div>
+      <h3 style="color:white;margin-bottom:12px;">Business Model</h3>
+      <ul style="list-style:none;display:grid;gap:6px;font-size:0.85rem;color:#d1d5db;">
+        <li>→ Device: $89 one-time (retail)</li>
+        <li>→ Plan: $7.99/month (SIM + cloud)</li>
+        <li>→ Cost to serve: ~$3/mo → 62% margin</li>
+        <li>→ Target: families of 75+ seniors</li>
+        <li>→ Channel: Amazon, pharmacies, GP offices</li>
+        <li>→ Gift purchase model (adult children buy)</li>
+        <li style="color:#22c55e;font-weight:700;">→ LTV at 3yr: ~$377/device</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <strong>SafeSignal</strong> — Elderly Check-In Hub · Product Concept Research Document<br>
+  Research date: May 2026 · Market data sourced from FutureMarketInsights, Pew Research, MDPI, NCOA
+</footer>
+
+</body>
+</html>
