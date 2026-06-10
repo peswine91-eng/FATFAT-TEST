@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>WhatsApp Dealers — Attrage Sale</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; background: #f0f2f5; color: #1a1a1a; font-size: 15px; padding-bottom: 40px; }
+
+  .header { background: #075e54; color: white; padding: 20px 16px 16px; }
+  .header h1 { font-size: 20px; font-weight: 700; }
+  .header p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .progress-bar { background: rgba(255,255,255,0.2); border-radius: 10px; height: 8px; margin-top: 12px; }
+  .progress-fill { background: #25d366; border-radius: 10px; height: 8px; width: 0%; transition: width 0.3s; }
+  .progress-label { font-size: 12px; opacity: 0.8; margin-top: 6px; }
+
+  .msg-box { background: #e7fdd8; border: 2px solid #25d366; border-radius: 12px; margin: 16px; padding: 14px 16px; position: relative; }
+  .msg-box h3 { color: #075e54; font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .msg-text { font-size: 13px; line-height: 1.6; color: #333; white-space: pre-wrap; font-family: monospace; background: white; border-radius: 8px; padding: 12px; border: 1px solid #ddd; max-height: 160px; overflow-y: auto; }
+  .copy-btn { background: #25d366; color: white; border: none; border-radius: 20px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; display: block; width: 100%; margin-top: 10px; }
+  .copy-btn:active { background: #1da851; }
+  .copied { background: #075e54 !important; }
+
+  .section { padding: 0 16px; margin-top: 16px; }
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 8px; padding-left: 4px; }
+
+  .dealer-card { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .dealer-card.sent { background: #e7fdd8; border: 1px solid #b2dfdb; }
+  .dealer-info { flex: 1; min-width: 0; }
+  .dealer-name { font-weight: 700; font-size: 15px; color: #1a1a1a; }
+  .dealer-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .dealer-number { font-size: 12px; color: #25d366; font-weight: 600; margin-top: 3px; }
+
+  .wa-btn { background: #25d366; color: white; border: none; border-radius: 50px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+  .wa-btn:active { background: #1da851; transform: scale(0.97); }
+  .wa-btn.done { background: #aaa; }
+  .wa-btn svg { width: 16px; height: 16px; fill: white; flex-shrink: 0; }
+
+  .call-btn { background: #1565c0; color: white; border: none; border-radius: 50px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+  .call-btn svg { width: 16px; height: 16px; fill: white; }
+
+  .online-card { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .online-card .dealer-name { font-weight: 700; font-size: 15px; }
+  .online-card .dealer-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .online-link { display: inline-block; background: #1565c0; color: white; border-radius: 20px; padding: 8px 16px; font-size: 13px; font-weight: 700; text-decoration: none; margin-top: 10px; }
+
+  .alert-box { background: #fff3e0; border-left: 4px solid #ff6f00; border-radius: 0 8px 8px 0; padding: 12px 14px; margin: 0 16px 16px; font-size: 13px; color: #444; }
+  .alert-box strong { color: #e65100; }
+
+  .sent-badge { background: #25d366; color: white; border-radius: 10px; font-size: 11px; font-weight: 700; padding: 2px 8px; display: none; }
+  .sent-badge.visible { display: inline-block; }
+
+  .summary { background: #075e54; color: white; border-radius: 12px; margin: 16px; padding: 16px; text-align: center; }
+  .summary h3 { font-size: 16px; margin-bottom: 4px; }
+  .summary p { font-size: 13px; opacity: 0.8; }
+
+  .tip { background: #e3f2fd; border-radius: 8px; padding: 12px 14px; margin: 0 16px 12px; font-size: 13px; color: #1565c0; }
+  .tip strong { color: #0d47a1; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📱 WhatsApp Car Dealers</h1>
+  <p>Mitsubishi Attrage 1.2 CVT — Initial Quote Request</p>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 of 19 messaged</div>
+</div>
+
+<div class="tip">
+  <strong>How to use:</strong> Tap "COPY MESSAGE" below first, then tap each WhatsApp button. The message opens pre-filled — just tap Send.
+</div>
+
+<!-- MESSAGE BOX -->
+<div class="msg-box">
+  <h3>Your Message <span id="copyDone" style="font-size:11px;color:#075e54;display:none">✓ Copied!</span></h3>
+  <div class="msg-text" id="msgPreview"></div>
+  <button class="copy-btn" onclick="copyMessage()" id="copyBtn">📋 COPY MESSAGE</button>
+</div>
+
+<div class="alert-box">
+  <strong>No photos needed at this stage.</strong> This message asks for an initial quote only. Send photos only when a dealer confirms genuine interest. The message already tells them photos are available on request.
+</div>
+
+<!-- MOBILE NUMBERS — WHATSAPP DIRECT -->
+<div class="section">
+  <div class="section-title">✅ WhatsApp Direct — Mobile Numbers</div>
+
+  <div class="dealer-card" id="d1">
+    <div class="dealer-info">
+      <div class="dealer-name">⭐ Carro <span class="sent-badge" id="badge-d1">Sent ✓</span></div>
+      <div class="dealer-sub">Genie's parent company — call this one first</div>
+      <div class="dealer-number">+65 6714 6652</div>
+    </div>
+    <a class="wa-btn" id="btn-d1" href="https://wa.me/6567146652" target="_blank" onclick="markSent('d1')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d2">
+    <div class="dealer-info">
+      <div class="dealer-name">Paragon Motors <span class="sent-badge" id="badge-d2">Sent ✓</span></div>
+      <div class="dealer-sub">Bukit Batok — transparent valuation</div>
+      <div class="dealer-number">+65 9632 2370</div>
+    </div>
+    <a class="wa-btn" id="btn-d2" href="https://wa.me/6596322370" target="_blank" onclick="markSent('d2')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d3">
+    <div class="dealer-info">
+      <div class="dealer-name">Republic Auto <span class="sent-badge" id="badge-d3">Sent ✓</span></div>
+      <div class="dealer-sub">Cycle &amp; Carriage — Pandan Gardens</div>
+      <div class="dealer-number">+65 8878 7812</div>
+    </div>
+    <a class="wa-btn" id="btn-d3" href="https://wa.me/6588787812" target="_blank" onclick="markSent('d3')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d4">
+    <div class="dealer-info">
+      <div class="dealer-name">Car Choice Singapore <span class="sent-badge" id="badge-d4">Sent ✓</span></div>
+      <div class="dealer-sub">5 locations islandwide — daily 10am–7pm</div>
+      <div class="dealer-number">+65 8318 9089</div>
+    </div>
+    <a class="wa-btn" id="btn-d4" href="https://wa.me/6583189089" target="_blank" onclick="markSent('d4')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d5">
+    <div class="dealer-info">
+      <div class="dealer-name">Speedo Motoring — Sandy <span class="sent-badge" id="badge-d5">Sent ✓</span></div>
+      <div class="dealer-sub">Ubi Ave 3 — WhatsApp active</div>
+      <div class="dealer-number">+65 8688 7883</div>
+    </div>
+    <a class="wa-btn" id="btn-d5" href="https://wa.me/6586887883" target="_blank" onclick="markSent('d5')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d6">
+    <div class="dealer-info">
+      <div class="dealer-name">Speedo Motoring — Ben <span class="sent-badge" id="badge-d6">Sent ✓</span></div>
+      <div class="dealer-sub">Ubi Ave 3 — WhatsApp active</div>
+      <div class="dealer-number">+65 9628 8231</div>
+    </div>
+    <a class="wa-btn" id="btn-d6" href="https://wa.me/6596288231" target="_blank" onclick="markSent('d6')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d7">
+    <div class="dealer-info">
+      <div class="dealer-name">DirectCars <span class="sent-badge" id="badge-d7">Sent ✓</span></div>
+      <div class="dealer-sub">300+ dealer network — quote in 3 hrs</div>
+      <div class="dealer-number">+65 9144 1158</div>
+    </div>
+    <a class="wa-btn" id="btn-d7" href="https://wa.me/6591441158" target="_blank" onclick="markSent('d7')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d8">
+    <div class="dealer-info">
+      <div class="dealer-name">Hua Yang Group <span class="sent-badge" id="badge-d8">Sent ✓</span></div>
+      <div class="dealer-sub">Sin Ming Road — Est. 1984</div>
+      <div class="dealer-number">+65 8010 5517</div>
+    </div>
+    <a class="wa-btn" id="btn-d8" href="https://wa.me/6580105517" target="_blank" onclick="markSent('d8')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.467-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d9">
+    <div class="dealer-info">
+      <div class="dealer-name">Platinum Motoring <span class="sent-badge" id="badge-d9">Sent ✓</span></div>
+      <div class="dealer-sub">Tampines — SGCarMart award winner</div>
+      <div class="dealer-number">+65 9239 9992</div>
+    </div>
+    <a class="wa-btn" id="btn-d9" href="https://wa.me/6592399992" target="_blank" onclick="markSent('d9')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- CALL OR WHATSAPP — LANDLINES -->
+<div class="section" style="margin-top:20px">
+  <div class="section-title">📞 Call or WhatsApp — Office Numbers</div>
+  <p style="font-size:12px;color:#888;margin-bottom:10px;padding-left:4px">These are office/landline numbers. Try WhatsApp first — many offices use WhatsApp Business. If it doesn't deliver, call instead.</p>
+
+  <div class="dealer-card" id="d10">
+    <div class="dealer-info">
+      <div class="dealer-name">SGCarMart / Quotz <span class="sent-badge" id="badge-d10">Sent ✓</span></div>
+      <div class="dealer-sub">The same platform that bid $18,800 — ask them to resubmit</div>
+      <div class="dealer-number">+65 6744 7571</div>
+    </div>
+    <a class="wa-btn" id="btn-d10" href="https://wa.me/6567447571" target="_blank" onclick="markSent('d10')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d11">
+    <div class="dealer-info">
+      <div class="dealer-name">OneShift (Carousell) <span class="sent-badge" id="badge-d11">Sent ✓</span></div>
+      <div class="dealer-sub">500+ dealers — independent of Quotz</div>
+      <div class="dealer-number">+65 6533 5878</div>
+    </div>
+    <a class="wa-btn" id="btn-d11" href="https://wa.me/6565335878" target="_blank" onclick="markSent('d11')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d12">
+    <div class="dealer-info">
+      <div class="dealer-name">Carsome <span class="sent-badge" id="badge-d12">Sent ✓</span></div>
+      <div class="dealer-sub">SE Asia's largest — direct buyer</div>
+      <div class="dealer-number">+65 6222 0401</div>
+    </div>
+    <a class="wa-btn" id="btn-d12" href="https://wa.me/6562220401" target="_blank" onclick="markSent('d12')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d13">
+    <div class="dealer-info">
+      <div class="dealer-name">Carsnap <span class="sent-badge" id="badge-d13">Sent ✓</span></div>
+      <div class="dealer-sub">Fixed offer, quote in 24hrs</div>
+      <div class="dealer-number">+65 6631 8430</div>
+    </div>
+    <a class="wa-btn" id="btn-d13" href="https://wa.me/6566318430" target="_blank" onclick="markSent('d13')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d14">
+    <div class="dealer-info">
+      <div class="dealer-name">SGCarDeals <span class="sent-badge" id="badge-d14">Sent ✓</span></div>
+      <div class="dealer-sub">Serangoon — reaches direct buyers too</div>
+      <div class="dealer-number">+65 6100 7999</div>
+    </div>
+    <a class="wa-btn" id="btn-d14" href="https://wa.me/6561007999" target="_blank" onclick="markSent('d14')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d15">
+    <div class="dealer-info">
+      <div class="dealer-name">CarTimes Automobile <span class="sent-badge" id="badge-d15">Sent ✓</span></div>
+      <div class="dealer-sub">Ubi Ave 2 — largest independent marketplace</div>
+      <div class="dealer-number">+65 6844 5111</div>
+    </div>
+    <a class="wa-btn" id="btn-d15" href="https://wa.me/6568445111" target="_blank" onclick="markSent('d15')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d16">
+    <div class="dealer-info">
+      <div class="dealer-name">Vincar <span class="sent-badge" id="badge-d16">Sent ✓</span></div>
+      <div class="dealer-sub">Leng Kee Road — top-rated direct buyer</div>
+      <div class="dealer-number">+65 6473 1119</div>
+    </div>
+    <a class="wa-btn" id="btn-d16" href="https://wa.me/6564731119" target="_blank" onclick="markSent('d16')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d17">
+    <div class="dealer-info">
+      <div class="dealer-name">Jack Cars Enterprise <span class="sent-badge" id="badge-d17">Sent ✓</span></div>
+      <div class="dealer-sub">Kampong Ubi — Est. 1984, Japanese cars</div>
+      <div class="dealer-number">+65 6744 1900</div>
+    </div>
+    <a class="wa-btn" id="btn-d17" href="https://wa.me/6567441900" target="_blank" onclick="markSent('d17')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d18">
+    <div class="dealer-info">
+      <div class="dealer-name">ICP Reowned (Inchcape) <span class="sent-badge" id="badge-d18">Sent ✓</span></div>
+      <div class="dealer-sub">Pandan Road — 145-point inspection</div>
+      <div class="dealer-number">+65 6631 1666</div>
+    </div>
+    <a class="wa-btn" id="btn-d18" href="https://wa.me/6566311666" target="_blank" onclick="markSent('d18')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+
+  <div class="dealer-card" id="d19">
+    <div class="dealer-info">
+      <div class="dealer-name">Platinum Motoring (Office) <span class="sent-badge" id="badge-d19">Sent ✓</span></div>
+      <div class="dealer-sub">Tampines — office line</div>
+      <div class="dealer-number">+65 6584 2502</div>
+    </div>
+    <a class="wa-btn" id="btn-d19" href="https://wa.me/6565842502" target="_blank" onclick="markSent('d19')">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Try WA
+    </a>
+  </div>
+</div>
+
+<!-- ONLINE ONLY -->
+<div class="section" style="margin-top:20px">
+  <div class="section-title">🌐 Online Form Only — Submit via Website</div>
+  <p style="font-size:12px;color:#888;margin-bottom:10px;padding-left:4px">These platforms don't have a WhatsApp number — submit via their website forms. Takes 3–5 minutes each.</p>
+
+  <div class="online-card">
+    <div class="dealer-name">Motorist.sg — 600+ dealers bid</div>
+    <div class="dealer-sub">Independent of Quotz. Free. Response same day.</div>
+    <a class="online-link" href="https://www.motorist.sg/sell-car" target="_blank">Submit at motorist.sg →</a>
+  </div>
+
+  <div class="online-card">
+    <div class="dealer-name">UCARS — 230+ dealers, NO commission</div>
+    <div class="dealer-sub">Free for seller. Quote within 48 hours.</div>
+    <a class="online-link" href="https://ucars.sg" target="_blank">Submit at ucars.sg →</a>
+  </div>
+
+  <div class="online-card">
+    <div class="dealer-name">Carro — Direct buyer (Genie's parent)</div>
+    <div class="dealer-sub">Also has phone: +65 6714 6652. Call them first!</div>
+    <a class="online-link" href="https://carro.co/sg/en/sell" target="_blank">Submit at carro.co →</a>
+  </div>
+</div>
+
+<div class="summary">
+  <h3 id="summaryText">0 of 19 contacted</h3>
+  <p>Keep going — more responses = better negotiating power</p>
+</div>
+
+<script>
+var totalDealers = 19;
+var sentCount = 0;
+
+var message = "Hi, I am a private car owner looking for an initial quote to sell my car. I am relocating overseas and looking to sell quickly. Photos are available upon request.\n\n--- CAR DETAILS ---\n2019 Mitsubishi Attrage 1.2 CVT\nNormal Plate (ROPC Converted to Normal — no restrictions)\nCOE expiry: October 2030 (~4 years remaining)\nYear of Manufacture: 2019 | Reg: Oct 2020\nMileage: 66,000 km\nColour: Red | Auto CVT\nEngine: 1193cc Petrol\nOwners: 3\nPARF rebate: ~$2,500\n\n--- CONDITION ---\nNo accident history\nLast serviced: June 2026 at 66,000 km\nNew battery: January 2026\nNew infotainment screen + rear camera installed\nOil recently changed\nInterior & exterior cleaning done\nFull service records available\n\nKindly advise your best offer. Thank you!";
+
+document.getElementById('msgPreview').textContent = message;
+
+function copyMessage() {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(message).then(function() {
+      showCopied();
+    });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = message;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showCopied();
+  }
+}
+
+function showCopied() {
+  var btn = document.getElementById('copyBtn');
+  var done = document.getElementById('copyDone');
+  btn.textContent = '✓ Message Copied!';
+  btn.classList.add('copied');
+  done.style.display = 'inline';
+  setTimeout(function() {
+    btn.textContent = '📋 COPY MESSAGE AGAIN';
+    btn.classList.remove('copied');
+  }, 3000);
+}
+
+function markSent(id) {
+  var card = document.getElementById(id);
+  var badge = document.getElementById('badge-' + id);
+  var btn = document.getElementById('btn-' + id);
+  if (card && !card.classList.contains('sent')) {
+    card.classList.add('sent');
+    badge.classList.add('visible');
+    btn.classList.add('done');
+    btn.textContent = '✓ Sent';
+    sentCount++;
+    updateProgress();
+  }
+}
+
+function updateProgress() {
+  var pct = (sentCount / totalDealers) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = sentCount + ' of ' + totalDealers + ' messaged';
+  document.getElementById('summaryText').textContent = sentCount + ' of ' + totalDealers + ' contacted';
+}
+</script>
+</body>
+</html>
