@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mitsubishi Attrage — Complete Car Sale Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; font-size: 15px; color: #1a1a1a; background: #fff; line-height: 1.6; }
+  .cover { background: #1a237e; color: white; padding: 40px 24px 32px; text-align: center; }
+  .cover h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+  .cover h2 { font-size: 16px; font-weight: 400; opacity: 0.85; margin-bottom: 20px; }
+  .cover .badge { display: inline-block; background: #ff6f00; color: white; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; margin: 4px; }
+  .cover .date { margin-top: 16px; font-size: 12px; opacity: 0.6; }
+  .toc { background: #f5f5f5; padding: 20px 24px; border-left: 4px solid #1a237e; margin: 0; }
+  .toc h3 { color: #1a237e; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { padding: 3px 0; font-size: 14px; color: #333; }
+  .section { padding: 24px 20px; border-bottom: 1px solid #e0e0e0; }
+  .section-header { background: #1a237e; color: white; padding: 10px 16px; margin: 0 -20px 20px; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .section-header .num { background: rgba(255,255,255,0.25); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
+  h3 { color: #1a237e; font-size: 15px; margin: 18px 0 8px; border-bottom: 2px solid #e8eaf6; padding-bottom: 4px; }
+  h4 { color: #333; font-size: 14px; margin: 14px 0 6px; }
+  p { margin-bottom: 10px; font-size: 14px; }
+  ul, ol { padding-left: 20px; margin-bottom: 10px; }
+  li { margin-bottom: 4px; font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: #1a237e; color: white; padding: 8px 10px; text-align: left; font-size: 12px; }
+  td { padding: 7px 10px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+  tr:nth-child(even) td { background: #f8f9ff; }
+  .alert { background: #fff3e0; border-left: 4px solid #ff6f00; padding: 12px 14px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+  .alert strong { color: #e65100; }
+  .success { background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 12px 14px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+  .success strong { color: #1b5e20; }
+  .info { background: #e3f2fd; border-left: 4px solid #1565c0; padding: 12px 14px; margin: 12px 0; border-radius: 0 6px 6px 0; font-size: 14px; }
+  .info strong { color: #0d47a1; }
+  .codeblock { background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px; padding: 14px 16px; font-family: monospace; font-size: 13px; white-space: pre-wrap; margin: 12px 0; line-height: 1.7; }
+  .tag { display: inline-block; background: #e8eaf6; color: #1a237e; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; margin: 2px; }
+  .tag.green { background: #e8f5e9; color: #2e7d32; }
+  .tag.red { background: #ffebee; color: #c62828; }
+  .tag.orange { background: #fff3e0; color: #e65100; }
+  .step { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; }
+  .step-num { background: #1a237e; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+  .step-content { flex: 1; }
+  .step-content strong { font-size: 14px; color: #1a237e; }
+  .step-content p { font-size: 13px; margin: 4px 0 0; color: #444; }
+  .contact-card { background: #f8f9ff; border: 1px solid #c5cae9; border-radius: 8px; padding: 12px 14px; margin: 8px 0; }
+  .contact-card .name { font-weight: 700; color: #1a237e; font-size: 15px; }
+  .contact-card .details { font-size: 13px; color: #444; margin-top: 4px; }
+  .contact-card .details a { color: #1565c0; }
+  .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+  .photo-item { background: #f5f5f5; border-radius: 6px; padding: 10px 12px; font-size: 13px; }
+  .photo-item .shot-num { font-weight: 700; color: #1a237e; font-size: 16px; margin-bottom: 2px; }
+  .photo-item .shot-name { font-weight: 600; font-size: 13px; }
+  .photo-item .shot-tip { font-size: 12px; color: #666; margin-top: 3px; }
+  .financial-box { background: #1a237e; color: white; border-radius: 10px; padding: 18px 20px; margin: 14px 0; }
+  .financial-box h4 { color: #90caf9; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .financial-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
+  .financial-row:last-child { border-bottom: none; font-weight: 700; color: #ffcc02; font-size: 16px; margin-top: 4px; }
+  .priority-badge { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .p1 { background: #c62828; color: white; }
+  .p2 { background: #e65100; color: white; }
+  .p3 { background: #1565c0; color: white; }
+  .footer { background: #1a237e; color: rgba(255,255,255,0.7); text-align: center; padding: 20px; font-size: 12px; }
+  @media print {
+    .section { page-break-inside: avoid; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .financial-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @media (max-width: 480px) {
+    .photo-grid { grid-template-columns: 1fr; }
+    .cover h1 { font-size: 22px; }
+    table { font-size: 12px; }
+    td, th { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>Mitsubishi Attrage 1.2 CVT</h1>
+  <h2>Complete Car Sale Guide — Singapore</h2>
+  <div>
+    <span class="badge">Normal Plate ✓</span>
+    <span class="badge">COE till Oct 2030</span>
+    <span class="badge">Target: $44,000–$48,000</span>
+  </div>
+  <div class="date">Prepared June 2026 | For private sharing only</div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li>Your Car's Financial Situation — The Numbers</li>
+    <li>Photo Assessment &amp; What to Reshoot</li>
+    <li>Complete Photo Guide (28 Shots)</li>
+    <li>Every Platform to List On — Private Buyers</li>
+    <li>Ready-to-Use Listing Description</li>
+    <li>Every Dealership to Contact — NOT on Quotz</li>
+    <li>How to Contact Dealers — What to Say</li>
+    <li>How the Log Card &amp; Loan Settlement Works</li>
+    <li>Urgent Action Plan — Day by Day</li>
+    <li>Help &amp; Financial Assistance Contacts</li>
+  </ol>
+</div>
+
+
+<!-- SECTION 1: FINANCIAL SITUATION -->
+<div class="section">
+  <div class="section-header"><span class="num">1</span> Your Car's Financial Situation — The Numbers</div>
+
+  <div class="alert">
+    <strong>⚠ URGENT:</strong> Your husband has lost his job and monthly instalments to Genie Financial Services cannot be maintained. You must sell as quickly as possible at the highest possible price to minimise your remaining loan shortfall.
+  </div>
+
+  <h3>Your Car Details</h3>
+  <table>
+    <tr><th>Detail</th><th>Value</th></tr>
+    <tr><td>Car</td><td>Mitsubishi Attrage 1.2 CVT</td></tr>
+    <tr><td>Year of Manufacture</td><td>2019</td></tr>
+    <tr><td>Registration Date</td><td>October 2020</td></tr>
+    <tr><td>COE Expiry</td><td>14 October 2030 (~4 years 4 months left)</td></tr>
+    <tr><td>Colour</td><td>Red</td></tr>
+    <tr><td>Plate Status</td><td><strong>Normal Plate</strong> (converted from ROPC — no restrictions)</td></tr>
+    <tr><td>Number of Owners</td><td>3</td></tr>
+    <tr><td>Engine</td><td>1193cc Petrol, 79 bhp</td></tr>
+    <tr><td>Paper Value (LTA)</td><td>$18,811</td></tr>
+    <tr><td>Outstanding Loan (Genie)</td><td>$66,000</td></tr>
+  </table>
+
+  <h3>What Your Car Is Actually Worth</h3>
+  <div class="success">
+    <strong>✅ Good news:</strong> Similar Mitsubishi Attrages (2019/2020, COE to 2030) are listed by dealers at $48,000–$58,800. The Quotz bid of $18,800 was dealers trying to buy at scrap price. Your car is worth far more.
+  </div>
+  <table>
+    <tr><th>Sale Method</th><th>Realistic Price</th><th>Remaining Loan After Sale</th></tr>
+    <tr><td>Private sale (Carousell/direct)</td><td>$40,000–$48,000</td><td>$18,000–$26,000</td></tr>
+    <tr><td>Independent dealer (walk-in)</td><td>$32,000–$42,000</td><td>$24,000–$34,000</td></tr>
+    <tr><td>Carro direct offer</td><td>$44,000–$52,000</td><td>$14,000–$22,000</td></tr>
+    <tr><td><strong>Target: Private buyer</strong></td><td><strong>$44,000–$48,000</strong></td><td><strong>$18,000–$22,000</strong></td></tr>
+    <tr><td style="color:#c62828">Quotz bid (DO NOT ACCEPT)</td><td style="color:#c62828">$18,800</td><td style="color:#c62828">$47,200</td></tr>
+  </table>
+
+  <div class="financial-box">
+    <h4>Shortfall Calculator</h4>
+    <div class="financial-row"><span>Outstanding loan to Genie</span><span>$66,000</span></div>
+    <div class="financial-row"><span>If you sell at $44,000</span><span>–$44,000</span></div>
+    <div class="financial-row"><span>Remaining you owe Genie</span><span>$22,000</span></div>
+  </div>
+  <p style="font-size:13px;color:#555">At $44,000 you still owe $22,000 — but this can be arranged as a payment plan with Genie. It is manageable. Do NOT sell at $18,800 which leaves you with $47,200 debt and no car.</p>
+
+  <h3>Important: Carro Is Genie's Parent Company</h3>
+  <div class="info">
+    <strong>📌 Key fact:</strong> Genie Financial Services (your loan provider) is a wholly owned subsidiary of <strong>Carro</strong>. Carro offered you $44,000–$52,000 just one month ago. Call Carro today (+65 6714 6652) and tell them your Genie loan is outstanding. They may be able to buy the car and settle the loan directly — one transaction, one company.
+  </div>
+</div>
+
+
+<!-- SECTION 2: PHOTO ASSESSMENT -->
+<div class="section">
+  <div class="section-header"><span class="num">2</span> Photo Assessment — Your Current Photos</div>
+
+  <h3>What You Have Now (Quotz Photos)</h3>
+  <p>The photos currently on Quotz show your car taken in a <strong>covered carpark under fluorescent lighting</strong> with other cars and pillars in the background. Here is the honest assessment:</p>
+
+  <table>
+    <tr><th>Element</th><th>Current</th><th>What's Needed for Private Sale</th></tr>
+    <tr><td>Lighting</td><td><span class="tag red">Poor — indoor fluorescent</span></td><td>Natural light, golden hour (7:30am or 6:30pm)</td></tr>
+    <tr><td>Background</td><td><span class="tag red">Cluttered carpark</span></td><td>Clean rooftop carpark or open area</td></tr>
+    <tr><td>Main angle</td><td><span class="tag orange">Okay — front 3/4</span></td><td>Same angle but lower + better lighting</td></tr>
+    <tr><td>Number of photos</td><td><span class="tag red">~5 shots only</span></td><td>Minimum 15–20 for private listing</td></tr>
+    <tr><td>Interior shots</td><td><span class="tag red">None visible</span></td><td>8 interior shots required</td></tr>
+    <tr><td>Odometer</td><td><span class="tag red">Missing</span></td><td>Mandatory — buyers will ask</td></tr>
+  </table>
+
+  <div class="alert">
+    <strong>Can you use the current photos?</strong> For a quick dealer enquiry — yes. For a private listing at $44,000–$48,000 — no. Buyers paying this price expect to see 15–20 clear photos including interior, mileage, engine bay. Better photos = more enquiries = faster sale = less COE lost. Spend 1 hour this weekend taking proper photos. It is worth $5,000–$10,000 in buyer confidence.
+  </div>
+</div>
+
+
+<!-- SECTION 3: PHOTO GUIDE -->
+<div class="section">
+  <div class="section-header"><span class="num">3</span> Complete Photo Guide — 28 Shots</div>
+
+  <h3>Before You Shoot — Preparation (Do This First)</h3>
+  <ol>
+    <li>Wash the car thoroughly — exterior, windows, wheels</li>
+    <li>Vacuum interior completely — seats, boot, floor mats</li>
+    <li>Wipe dashboard, door panels, centre console with a damp cloth</li>
+    <li>Remove ALL personal items from the car (bags, ERP device cover, sunshades, everything)</li>
+    <li>Apply tyre shine spray to all 4 tyres ($5 from any petrol kiosk or Sheng Siong)</li>
+    <li>Clean the engine bay with a dry cloth — just remove dust and dirt</li>
+  </ol>
+
+  <h3>When &amp; Where to Shoot</h3>
+  <table>
+    <tr><th>Option</th><th>Details</th></tr>
+    <tr><td><strong>Best time</strong></td><td>7:00–8:00am (after sunrise) OR 6:15–7:00pm (before sunset) — soft golden light</td></tr>
+    <tr><td><strong>Second best</strong></td><td>Overcast day — uniform light, no harsh shadows</td></tr>
+    <tr><td><strong>Avoid</strong></td><td>11am–4pm midday sun — creates black shadows under car, washes out red paint</td></tr>
+    <tr><td><strong>Best location</strong></td><td>Multi-storey carpark rooftop — open sky, clean background. Any open industrial area works.</td></tr>
+    <tr><td><strong>Avoid</strong></td><td>HDB void decks, covered carparks, locations with many other cars in background</td></tr>
+  </table>
+
+  <h3>Exterior Shots (10 photos)</h3>
+  <div class="photo-grid">
+    <div class="photo-item">
+      <div class="shot-num">📸 1</div>
+      <div class="shot-name">Front 3/4 — COVER PHOTO</div>
+      <div class="shot-tip">Crouch to wheel height. Stand at 45° from the front-left corner. This is your hero shot — take 5–10 versions, pick the best.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 2</div>
+      <div class="shot-name">Rear 3/4</div>
+      <div class="shot-tip">Same technique from the rear-right corner. Crouch down slightly.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 3</div>
+      <div class="shot-name">Driver-side profile</div>
+      <div class="shot-tip">Stand back far enough to get the whole car. Keep the horizon level. Shows overall condition.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 4</div>
+      <div class="shot-name">Passenger-side profile</div>
+      <div class="shot-tip">Same as above from the other side.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 5</div>
+      <div class="shot-name">Front straight-on</div>
+      <div class="shot-tip">Centred, slightly below bonnet height. Shows headlights and grille.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 6</div>
+      <div class="shot-name">Rear straight-on</div>
+      <div class="shot-tip">Centred. Shows tail lights and boot lid condition.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 7–10</div>
+      <div class="shot-name">Each wheel — 4 shots</div>
+      <div class="shot-tip">Crouch down close. Show tyre tread and rim condition clearly. Buyers check all 4.</div>
+    </div>
+  </div>
+
+  <h3>Interior Shots (8 photos)</h3>
+  <div class="photo-grid">
+    <div class="photo-item">
+      <div class="shot-num">📸 11</div>
+      <div class="shot-name">Full dashboard</div>
+      <div class="shot-tip">Sit in passenger seat facing driver side. Switch car ON so the instrument cluster lights up. Shows everything working.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 12 ⚠</div>
+      <div class="shot-name">Odometer — MANDATORY</div>
+      <div class="shot-tip">Frame only the instrument cluster. Mileage MUST be clearly readable. Every buyer asks for this. Do not skip.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 13</div>
+      <div class="shot-name">Infotainment/new screen</div>
+      <div class="shot-tip">Car on, show the new screen you installed. Mention "upgraded infotainment + rear camera" — this is a selling point.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 14</div>
+      <div class="shot-name">Driver seat</div>
+      <div class="shot-tip">Shows the most wear. Be honest — if bolster is worn, show it. Buyers appreciate honesty.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 15</div>
+      <div class="shot-name">Rear seats</div>
+      <div class="shot-tip">Open rear door and shoot inward to show legroom and rear seat condition.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 16</div>
+      <div class="shot-name">Boot/trunk</div>
+      <div class="shot-tip">Fully open, empty, lit. Show full boot space.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 17</div>
+      <div class="shot-name">Gear shifter</div>
+      <div class="shot-tip">Confirms automatic CVT. Clean the area around it first.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 18</div>
+      <div class="shot-name">Steering wheel</div>
+      <div class="shot-tip">Shows condition. If there is any wear, show it honestly.</div>
+    </div>
+  </div>
+
+  <h3>Mechanical Shots (4 photos)</h3>
+  <div class="photo-grid">
+    <div class="photo-item">
+      <div class="shot-num">📸 19</div>
+      <div class="shot-name">Engine bay wide</div>
+      <div class="shot-tip">Bonnet fully open. Shows the whole engine bay. Clean it first with a dry cloth.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 20</div>
+      <div class="shot-name">Engine bay detail</div>
+      <div class="shot-tip">Close up of engine. Shows cleanliness and any recently replaced parts.</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 21</div>
+      <div class="shot-name">Fuel cap sticker</div>
+      <div class="shot-tip">Open the fuel cap and photograph the sticker showing fuel type (95 octane).</div>
+    </div>
+    <div class="photo-item">
+      <div class="shot-num">📸 22</div>
+      <div class="shot-name">New screen + rear camera</div>
+      <div class="shot-tip">Show the rear camera view active — this proves the upgrade is working.</div>
+    </div>
+  </div>
+
+  <h3>Condition/Honesty Shots</h3>
+  <div class="info">
+    <strong>Include close-up photos of every scratch, dent, or stone chip.</strong> This prevents wasted viewings and builds buyer trust. Buyers paying $44,000+ will inspect carefully — surprises at viewing lose the sale. Honesty earns you serious buyers who show up ready to pay.
+  </div>
+
+  <h3>Licence Plate — Blur It</h3>
+  <p><strong>Blur your plate in all public listing photos.</strong> No law requires it, but your plate links to your personal details. Use the free <strong>Snapseed app</strong> (available on iPhone and Android) — tap Tools → Selective → place blur dot on the plate. Takes 30 seconds per photo.</p>
+  <p>Show the unblurred plate only to serious buyers who contact you directly via WhatsApp, so they can do their own LTA check.</p>
+
+  <h3>Bonus: Record a 60-Second Video</h3>
+  <p>Walk around the car slowly, then sit inside and start the engine (show no warning lights on dashboard). Upload this to Facebook Marketplace and Carousell. Video listings get 3x more enquiries than photo-only listings. This single step can make the difference between selling in 2 weeks vs 6 weeks.</p>
+</div>
+
+
+<!-- SECTION 4: PLATFORMS -->
+<div class="section">
+  <div class="section-header"><span class="num">4</span> Every Platform to List On — Reach Direct (Private) Buyers</div>
+
+  <div class="success">
+    <strong>Strategy:</strong> List on ALL platforms simultaneously. It costs almost nothing. More listings = more eyes = faster sale. A private buyer pays $5,000–$10,000 more than a dealer. Every day you delay, 4 years of COE ticks down.
+  </div>
+
+  <h3><span class="priority-badge p1">Priority 1</span> — List These Today (Free + Highest Traffic)</h3>
+  <table>
+    <tr><th>Platform</th><th>Cost</th><th>How to List</th><th>Tip</th></tr>
+    <tr>
+      <td><strong>Carousell</strong><br>carousell.sg/autos</td>
+      <td>Free (1 listing per 3 months)</td>
+      <td>App → Sell → Cars &amp; Vehicles → Used Cars. Upload 10 photos, fill all details, set price.</td>
+      <td>Use the "Bump" feature ($2–$5) to push listing back to top every few days</td>
+    </tr>
+    <tr>
+      <td><strong>Facebook Marketplace</strong><br>facebook.com/marketplace</td>
+      <td>Free</td>
+      <td>Facebook app → Marketplace → Sell → Vehicles. Upload up to 50 photos + video.</td>
+      <td>Also post in Facebook groups: search "Singapore cars for sale direct owners" — groups with 50,000+ members</td>
+    </tr>
+    <tr>
+      <td><strong>SGCarMart Direct Owner</strong><br>sgcarmart.com</td>
+      <td>Small listing fee (~$20–$50, verify on site)</td>
+      <td>Register → Sell My Car → Direct Owner listing. Enter plate number — it auto-fills LTA data.</td>
+      <td>The most trusted Singapore car site. "Direct Owner" badge increases buyer confidence. Worth paying for.</td>
+    </tr>
+    <tr>
+      <td><strong>MyCarForum</strong><br>mycarforum.com</td>
+      <td><strong>Free</strong></td>
+      <td>Register → Marketplace → Cars For Sale section → Post new thread with photos and details.</td>
+      <td>200,000+ members, all car-savvy Singaporeans. Free. Very active for used car searches.</td>
+    </tr>
+  </table>
+
+  <h3><span class="priority-badge p2">Priority 2</span> — List These Same Day (Free)</h3>
+  <table>
+    <tr><th>Platform</th><th>Cost</th><th>Notes</th></tr>
+    <tr><td><strong>Facebook Car Sale Groups</strong></td><td>Free</td><td>Search Facebook: "Singapore cars for sale direct owners", "SG used car marketplace", "Singapore Mitsubishi owners". Post in multiple groups.</td></tr>
+    <tr><td><strong>HardwareZone Marketplace</strong><br>forums.hardwarezone.com.sg</td><td>Free</td><td>Register → Marketplace → Cars For Sale. Active Singapore forum community.</td></tr>
+    <tr><td><strong>Singapore Expats Forum</strong><br>singaporeexpats.com</td><td>Free</td><td>forum.singaporeexpats.com → Classifieds → Cars. Expats often pay fair prices without heavy negotiation.</td></tr>
+    <tr><td><strong>Telegram Groups</strong></td><td>Free</td><td>Search Telegram: "Singapore Cars For Sale". Multiple active groups with thousands of members.</td></tr>
+    <tr><td><strong>WhatsApp Groups</strong></td><td>Free</td><td>Share in any community WhatsApp groups you are already part of. Word of mouth is powerful.</td></tr>
+    <tr><td><strong>Instagram</strong></td><td>Free</td><td>Post photos as a Reel with price and "DM me" in caption. Use hashtags: #sgcars #singaporecar #mitsubishiattrage #carforsalesg</td></tr>
+  </table>
+
+  <h3><span class="priority-badge p3">Priority 3</span> — Consignment (They Handle Everything For You)</h3>
+  <p>If you don't have time to manage enquiries, a consignment agent lists and sells the car for you. They take a commission only when the car sells.</p>
+  <table>
+    <tr><th>Platform</th><th>Fee</th><th>Contact</th><th>What They Do</th></tr>
+    <tr><td><strong>OneShift "Sell For Me"</strong></td><td>$109 on sale</td><td>oneshift.com | +65 6533 5878</td><td>Lists on Carousell, manages all viewings and negotiations</td></tr>
+    <tr><td><strong>SGCarDeals</strong></td><td>Commission on sale</td><td>sgcardeals.com | +65 6100 7999</td><td>AI-assisted, reaches both dealers and private buyers</td></tr>
+    <tr><td><strong>Gingerbread Autos</strong></td><td>Commission on sale only</td><td>gingerbreadautos.com</td><td>Free consignment — they sell, you keep driving until sold</td></tr>
+    <tr><td><strong>Motorist Consignment</strong></td><td>Commission-based</td><td>motorist.sg</td><td>Full service — listing, viewings, paperwork</td></tr>
+  </table>
+</div>
+
+
+<!-- SECTION 5: LISTING DESCRIPTION -->
+<div class="section">
+  <div class="section-header"><span class="num">5</span> Ready-to-Use Listing Description</div>
+  <p>Copy this exactly and fill in the [ ] sections. Use this for Carousell, SGCarMart, Facebook, MyCarForum — all platforms.</p>
+
+  <div class="codeblock">2019 Mitsubishi Attrage 1.2 CVT | Normal Plate | COE till Oct 2030
+
+✅ NORMAL PLATE — No restrictions. Drive any time, any day.
+✅ Upgraded infotainment screen + rear camera (newly installed)
+✅ Regular servicing maintained
+
+COE till: October 2030 (~4 years remaining)
+PARF rebate: ~$2,500 (verify at LTA OneMotoring)
+Year of Manufacture: 2019 | Registration: Oct 2020
+Mileage: [INSERT CURRENT MILEAGE] km
+Colour: Red | Transmission: Auto CVT
+Engine: 1193cc Petrol | 79 bhp
+Previous owners: 3
+
+— CONDITION —
+[Write honestly: e.g. "No major accident history" OR "Minor accident in [year], repaired at [workshop name]"]
+Last serviced: [Month Year] at [mileage] km
+Recently upgraded: New infotainment screen + rear camera installed
+All aircon, windows, locks, lights fully working.
+Service records available for viewing.
+
+— WHY SELLING —
+Selling due to change in family circumstances.
+Genuine buyers only please.
+
+— COMPARABLE MARKET PRICES —
+Similar Attrages (2020 reg, COE to 2030) listed by dealers at $48,000–$58,800.
+Buying direct from owner saves you $5,000–$10,000 in dealer markup.
+
+— ASKING PRICE —
+$[your price] (negotiable for serious buyers)
+No agents please. Direct buyers only.
+
+— CONTACT —
+WhatsApp preferred: [your number]
+Available for viewing: [area, e.g. "Jurong West"] — weekday evenings and weekends
+Please message before calling.</div>
+
+  <h3>Suggested Asking Price</h3>
+  <table>
+    <tr><th>Your Goal</th><th>List At</th><th>Accept At</th></tr>
+    <tr><td>Fast sale (1–2 weeks)</td><td>$44,000</td><td>$40,000–$42,000</td></tr>
+    <tr><td>Balanced (3–4 weeks)</td><td>$48,000</td><td>$44,000–$46,000</td></tr>
+    <tr><td>Maximum price (4–8 weeks)</td><td>$52,000</td><td>$46,000–$50,000</td></tr>
+  </table>
+  <div class="info">
+    <strong>Recommended:</strong> List at $48,000. Comparable cars are $48,000–$58,800 at dealers. You are cheaper and they get it direct from owner. This is a genuine value proposition for buyers. Be prepared to negotiate down to $44,000.
+  </div>
+</div>
+
+
+<!-- SECTION 6: DEALER LIST -->
+<div class="section">
+  <div class="section-header"><span class="num">6</span> Every Dealership to Contact — NOT on Quotz</div>
+
+  <div class="info">
+    <strong>Note on Quotz:</strong> Quotz/SGCarMart has ~500 dealers in their network. The dealers below are either independent platforms with separate networks OR physical dealers who operate outside the SGCarMart system. Target these first.
+  </div>
+
+  <h3>Independent Bidding Platforms (Separate From Quotz — Submit to All)</h3>
+  <table>
+    <tr><th>Platform</th><th>Contact</th><th>Network Size</th><th>Cost to You</th></tr>
+    <tr><td><strong>Carro</strong> — carro.sg<br><em>⭐ Call first — Genie's parent company</em></td><td>+65 6714 6652<br>carro.co/sg/en/sell</td><td>Direct buyer</td><td>Free (collection $30 if needed)</td></tr>
+    <tr><td><strong>Motorist</strong><br>motorist.sg/sell-car</td><td>motorist.sg</td><td>600+ dealers</td><td>Free valuation</td></tr>
+    <tr><td><strong>OneShift by Carousell</strong><br>oneshift.com</td><td>+65 6533 5878</td><td>500+ dealers</td><td>$109 if sold</td></tr>
+    <tr><td><strong>UCARS</strong><br>ucars.sg</td><td>ucars.sg</td><td>230+ dealers</td><td><strong>Free — no commission</strong></td></tr>
+    <tr><td><strong>Carsome</strong><br>carsome.sg</td><td>+65 6222 0401<br>sg@carsome.com</td><td>Direct buyer</td><td>Free</td></tr>
+    <tr><td><strong>DirectCars</strong><br>directcars.com.sg</td><td>+65 9144 1158</td><td>300+ dealers</td><td>Free, quote in 3 hours</td></tr>
+    <tr><td><strong>Carsnap</strong><br>carsnap.sg</td><td>+65 6631 8430<br>support@carsnap.asia</td><td>Curated dealers</td><td>Free</td></tr>
+    <tr><td><strong>SGCarDeals</strong><br>sgcardeals.com</td><td>+65 6100 7999<br>ask@sgcardeals.com</td><td>Dealers + direct buyers</td><td>Commission on sale only</td></tr>
+  </table>
+
+  <h3>Independent Physical Dealers — Walk In or Call Directly</h3>
+  <p>These dealers buy cars from private owners directly. Bring your car details (mileage, condition, service records). Let them make an offer — then use the highest competing offer to negotiate with others.</p>
+
+  <div class="contact-card">
+    <div class="name">⭐ Paragon Motors</div>
+    <div class="details">
+      📞 +65 9632 2370 | paragonmotors.com.sg<br>
+      📍 60 Jln Lam Huat, #05-18, Singapore 737869 (Bukit Batok)<br>
+      Known for transparent valuations. Home evaluation available — they come to you.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">⭐ Car Choice Singapore (5 Locations)</div>
+    <div class="details">
+      📞 +65 8318 9089 | carchoice.com.sg | Daily 10am–7pm<br>
+      📍 Macpherson: 1 Kampong Ampat, #03-08/09<br>
+      📍 Woodlands: 101 Woodlands Ave 12, #01-10<br>
+      📍 Ang Mo Kio: 3 Ang Mo Kio St 62, #01-13/14<br>
+      📍 Bukit Batok: 1 Bukit Batok Crescent, #02-53<br>
+      📍 Ubi: 61 Ubi Ave 2, #03-13<br>
+      Most accessible dealer — 5 locations, can visit whichever is nearest.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">Speedo Motoring</div>
+    <div class="details">
+      📞 +65 6769 7757 | speedomotoring.com.sg<br>
+      WhatsApp: Sandy Lim +65 8688 7883 | Ben Wong +65 9628 8231<br>
+      📍 33 Ubi Ave 3, Vertex #01-75/76/77, Singapore 408868<br>
+      Mon–Fri 9:30am–7pm | Sat 9:30am–6:30pm | Sun 10:30am–6pm
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">CarTimes Automobile</div>
+    <div class="details">
+      📞 +65 6844 5111 | cartimes.com.sg<br>
+      📍 61 Ubi Ave 2, #06-01, Singapore 408898 (Automobile Megamart)<br>
+      Singapore's largest independent used car marketplace.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">Vincar</div>
+    <div class="details">
+      📞 +65 6473 1119 | vincar.com.sg<br>
+      📍 24 Leng Kee Road, Singapore 159096<br>
+      Top-rated dealer; direct purchase from private owners.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">Platinum Motoring</div>
+    <div class="details">
+      📞 +65 6584 2502 / +65 9239 9992 | platinummotoring.com.sg<br>
+      📍 1 Tampines North Drive 1, #01-02 T-Space, Singapore 528559<br>
+      SGCarMart award winner; active buyer.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">Hua Yang Group</div>
+    <div class="details">
+      📞 +65 8010 5517 | huayang.com.sg<br>
+      📍 159 Sin Ming Rd, #04-04 Amtech Building, Singapore 575625<br>
+      Established 1984. Reputable and experienced.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">Jack Cars Enterprise</div>
+    <div class="details">
+      📞 +65 6744 1900 | jackcars.com.sg<br>
+      📍 Blk 3007 Ubi Rd 1, #01-448/450/452, Singapore 408701<br>
+      Since 1984. Japanese car specialists.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">Republic Auto (Cycle &amp; Carriage)</div>
+    <div class="details">
+      📞 +65 6567 2000 / +65 8878 7812<br>
+      📍 Cycle &amp; Carriage Auto Hub, 209 Pandan Gardens Level 3, Singapore 609339<br>
+      Corporate, structured process. Backed by Jardine group.
+    </div>
+  </div>
+
+  <div class="contact-card">
+    <div class="name">ICP Reowned (Inchcape)</div>
+    <div class="details">
+      📞 +65 6631 1666 | icpreowned.com.sg<br>
+      📍 48 Pandan Road, #01-05, Singapore 609289<br>
+      145-point inspection; fair valuation for private sellers.
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 7: HOW TO CONTACT DEALERS -->
+<div class="section">
+  <div class="section-header"><span class="num">7</span> How to Contact Dealers — What to Say</div>
+
+  <h3>What Information to Have Ready</h3>
+  <ul>
+    <li>Car plate number</li>
+    <li>Current mileage (check your odometer)</li>
+    <li>Last service date and mileage</li>
+    <li>Any accident history (be honest)</li>
+    <li>The new screen and rear camera upgrade</li>
+    <li>The fact that it is already Normal Plate (converted from ROPC)</li>
+  </ul>
+
+  <h3>Script — What to Say When You Call</h3>
+  <div class="codeblock">"Hi, I'm a private owner looking to sell my car.
+
+It's a 2019 Mitsubishi Attrage 1.2 CVT, registered October 2020,
+plate number [YOUR PLATE].
+COE expires October 2030 — about 4 years and 4 months remaining.
+It's already converted to Normal Plate, no restrictions.
+Current mileage is approximately [X] km.
+3 previous owners. Recently upgraded infotainment screen and rear camera.
+
+I have an outstanding loan with Genie Financial Services.
+Could you give me a valuation? And can you tell me how you handle
+the settlement of the outstanding loan in the transaction?"</div>
+
+  <h3>When They Give You a Price — How to Negotiate</h3>
+  <ol>
+    <li>Get the offer in writing (WhatsApp message is fine)</li>
+    <li>Call the next dealer and tell them: "I have an offer of $X from another dealer — can you beat it?"</li>
+    <li>Keep doing this until you have 3–4 competing offers</li>
+    <li>The highest offer is your real market price</li>
+    <li>Go back to the second-highest and ask if they can match</li>
+  </ol>
+
+  <h3>Key Question to Ask Every Dealer</h3>
+  <div class="alert">
+    Always ask: <strong>"If your offer is lower than my outstanding loan, how does the shortfall work? Do you help arrange a payment plan with the finance company?"</strong><br><br>
+    Some dealers (especially consignment dealers) will help negotiate with Genie on your behalf. This is a useful service to look for.
+  </div>
+
+  <h3>About the Instagram Contact</h3>
+  <p>If you can find the Instagram account that offered you a price last month, <strong>DM them today:</strong></p>
+  <div class="codeblock">"Hi, we spoke about my Mitsubishi Attrage about a month ago.
+The car is still available. COE to Oct 2030, Normal Plate,
+recently upgraded screen and rear camera.
+Current mileage is [X] km.
+Are you still interested? What price can you offer?"</div>
+</div>
+
+
+<!-- SECTION 8: LOG CARD & LOAN SETTLEMENT -->
+<div class="section">
+  <div class="section-header"><span class="num">8</span> How the Log Card &amp; Loan Settlement Works</div>
+
+  <h3>What is the Log Card?</h3>
+  <p>The Vehicle Registration Certificate (commonly called the "log card") is the legal proof of vehicle ownership in Singapore. <strong>Genie Financial Services currently holds your log card</strong> because you have an outstanding hire-purchase loan. You cannot transfer ownership of the car without the log card being released.</p>
+
+  <h3>The Sale Process Step by Step</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <strong>Get your Early Settlement Figure from Genie</strong>
+      <p>Call Genie: +65 6715 1518 | Website: genie.sg. Ask: "What is my early settlement amount as of today?" This is the exact amount needed to fully pay off the loan and get the log card released. This number may be different (likely lower) than the $66,000 total remaining payments figure.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <strong>Find a buyer and agree on price</strong>
+      <p>Through your private listings or dealer contact. Agree on a price verbally first.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <strong>Collect a deposit from buyer</strong>
+      <p>Typically 10% of the agreed price (e.g. $4,500 on a $45,000 sale). This secures the buyer's commitment. Get a signed Sales &amp; Purchase Agreement (S&amp;P). You can download a template from the LTA OneMotoring website.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <strong>Settle the Genie loan</strong>
+      <p>When buyer pays the full balance, you use those funds to pay Genie the early settlement amount. If the sale price is less than the settlement amount, you must top up the difference before Genie releases the log card. Genie will process the release within 1–3 business days.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <strong>Genie releases the log card</strong>
+      <p>Once the loan is fully settled, Genie releases the log card to you (or directly to the buyer if pre-arranged).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <strong>Transfer of ownership via LTA OneMotoring</strong>
+      <p>Both buyer and seller log in to onemotoring.lta.gov.sg using SingPass. Seller initiates the transfer, buyer accepts. LTA transfer fee: $25. This can be done online — no need to go to LTA in person. Ownership transfers immediately upon completion.</p>
+    </div>
+  </div>
+
+  <h3>If Your Sale Price Is Less Than the Settlement Amount</h3>
+  <div class="alert">
+    <strong>Example:</strong> If Genie's early settlement amount is $55,000 but you sell for $44,000, you must pay Genie $11,000 from your own funds before they release the log card. This is the "top-up" or shortfall amount. You can:<br><br>
+    (a) Pay it in cash from savings<br>
+    (b) Ask Genie to allow a payment arrangement for the shortfall<br>
+    (c) Contact Credit Counselling Singapore (CCS) for free help negotiating with Genie — call <strong>6225 5227</strong>
+  </div>
+
+  <h3>Useful Contacts for This Process</h3>
+  <table>
+    <tr><th>Who</th><th>Contact</th><th>For What</th></tr>
+    <tr><td><strong>Genie Financial Services</strong></td><td>+65 6715 1518 | genie.sg</td><td>Get early settlement amount; arrange shortfall payment plan</td></tr>
+    <tr><td><strong>LTA OneMotoring</strong></td><td>onemotoring.lta.gov.sg</td><td>Online ownership transfer ($25 fee)</td></tr>
+    <tr><td><strong>Credit Counselling Singapore</strong></td><td>6225 5227 | ccs.org.sg</td><td>Free help negotiating with Genie on shortfall</td></tr>
+  </table>
+</div>
+
+
+<!-- SECTION 9: ACTION PLAN -->
+<div class="section">
+  <div class="section-header"><span class="num">9</span> Urgent Action Plan — Day by Day</div>
+
+  <div class="alert">
+    <strong>⏱ Every week you delay, ~$200–$300 worth of COE is consumed.</strong> Start today.
+  </div>
+
+  <h3>TODAY (Within the Next Few Hours)</h3>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <strong>Call Carro: +65 6714 6652</strong>
+      <p>They offered $44K–$52K last month. They are Genie's parent company. Ask for a revaluation and ask if they can settle the Genie loan directly. This is your fastest and cleanest path.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <strong>Submit online to Motorist + UCARS + DirectCars</strong>
+      <p>All free, all take under 10 minutes. motorist.sg/sell-car | ucars.sg | directcars.com.sg. Enter your plate number and details. Get quotes coming in by end of day.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <strong>DM the Instagram contact</strong>
+      <p>Find them and send the script above. A month-old lead who offered a fair price is worth pursuing immediately.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <strong>Call Genie: +65 6715 1518</strong>
+      <p>Ask for your exact "early settlement amount today." This is critical — you need this number before finalising any sale price. Explain your husband has lost his job and ask about hardship/deferment options.</p>
+    </div>
+  </div>
+
+  <h3>DAY 2 — Tomorrow</h3>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <strong>Let the Quotz auction close at 2PM</strong>
+      <p>Do NOT accept the current $18,800 bid. Simply let it close. You are under no obligation to accept. Use the closing of the auction as your trigger to move to private sale immediately.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <strong>Submit to Carsome, OneShift, Carsnap, SGCarDeals</strong>
+      <p>Complete the online forms for all four. Takes 30 minutes total. More offers = better negotiating position.</p>
+    </div>
+  </div>
+
+  <h3>THIS WEEKEND</h3>
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-content">
+      <strong>Wash the car, take all 28 photos + video</strong>
+      <p>Early morning or evening light. Clean carpark rooftop. Use the full photo checklist in Section 3. This is the most important thing you can do this weekend.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">8</div>
+    <div class="step-content">
+      <strong>Post listings on all platforms</strong>
+      <p>Carousell, SGCarMart Direct Owner, Facebook Marketplace, Facebook car groups, MyCarForum, HardwareZone. Use the ready-made description in Section 5. Blur plates using Snapseed app first.</p>
+    </div>
+  </div>
+
+  <h3>DAYS 3–7</h3>
+  <div class="step">
+    <div class="step-num">9</div>
+    <div class="step-content">
+      <strong>Visit dealers in person</strong>
+      <p>Paragon Motors (+65 9632 2370), Car Choice (+65 8318 9089), Speedo Motoring (+65 6769 7757). Bring your mileage, service records, and the highest online quote you have received. Let them beat it.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">10</div>
+    <div class="step-content">
+      <strong>Respond to ALL enquiries within 1 hour</strong>
+      <p>Speed of response is critical. Buyers move on quickly. Turn on Carousell and Facebook notifications. Arrange viewings as soon as possible.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-num">11</div>
+    <div class="step-content">
+      <strong>Bump your Carousell listing every 2 days</strong>
+      <p>The Bump feature pushes your listing back to the top of search results. Do this every 2 days for maximum visibility.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION 10: HELP CONTACTS -->
+<div class="section">
+  <div class="section-header"><span class="num">10</span> Help &amp; Financial Assistance Contacts</div>
+
+  <table>
+    <tr><th>Organisation</th><th>Contact</th><th>What They Can Do</th></tr>
+    <tr><td><strong>Genie Financial Services</strong></td><td>+65 6715 1518<br>genie.sg</td><td>Early settlement amount; hardship deferment; shortfall payment plan. Call today.</td></tr>
+    <tr><td><strong>Credit Counselling Singapore (CCS)</strong></td><td>6225 5227<br>ccs.org.sg</td><td>FREE debt counselling. Negotiate with Genie on your behalf. Arrange manageable repayment plan for shortfall. This is exactly their service.</td></tr>
+    <tr><td><strong>Legal Aid Bureau</strong></td><td>1800 225 1424<br>lab.mlaw.gov.sg</td><td>Free legal advice on loan terms and your rights if you qualify financially.</td></tr>
+    <tr><td><strong>ComCare (MSF)</strong></td><td>1800 222 0000<br>msf.gov.sg</td><td>Emergency financial assistance if family is in severe hardship due to job loss.</td></tr>
+    <tr><td><strong>NTUC e2i (Employment)</strong></td><td>6474 0606<br>e2i.com.sg</td><td>Job placement assistance for your husband. Faster income = faster ability to manage shortfall.</td></tr>
+    <tr><td><strong>Carro (Genie parent)</strong></td><td>+65 6714 6652<br>carro.sg</td><td>Car valuation and potential direct settlement with Genie in one transaction.</td></tr>
+  </table>
+
+  <div class="success">
+    <strong>Most important free call you can make:</strong> Credit Counselling Singapore at <strong>6225 5227</strong>. They deal with exactly your situation (outstanding car loan, job loss, negative equity) every day. Free, confidential, and they will contact Genie on your behalf.
+  </div>
+</div>
+
+<div class="footer">
+  Prepared June 2026 &nbsp;|&nbsp; For private use only &nbsp;|&nbsp; Information based on Singapore market research<br>
+  Market prices and platform details subject to change — verify directly with platforms before transacting.
+</div>
+
+</body>
+</html>
