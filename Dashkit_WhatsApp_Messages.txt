@@ -1,0 +1,45 @@
+DASHKIT — WHATSAPP MESSAGES TO SEND
+=====================================
+Replace [NAMA] with your name before sending.
+Attach design reference image once you have it from Lovable.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MESSAGE 1 OF 4
+TO: FabLab Bandung
+NUMBER: +62 895 6060 73321
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Halo kak! Selamat sore. Saya [NAMA], entrepreneur yang lagi di Bandung sekarang. Saya lagi develop dua produk baru — pertama sebuah spice kit (tempat bumbu perjalanan dalam casing semi-hard, ukuran travel kit), dan kedua sebuah cooking kit (casing tahan panas untuk peralatan masak portable). Keduanya masih tahap awal, belum ada desain final. Saya pengen banget datang langsung ke FabLab minggu ini untuk konsultasi dan kalau bisa langsung print kasar dulu biar bisa pegang bentuknya. Apakah ada slot yang bisa saya booking? Dan ada nggak yang bisa bantu convert referensi gambar ke file 3D di sana? Desain visualnya lagi saya siapkan dan akan saya kirim segera. Terima kasih kak! 🙏
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MESSAGE 2 OF 4
+TO: DR3D Indonesia
+NUMBER: +62 85875333516
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Halo, selamat sore! Saya [NAMA], lagi di Bandung dan lagi develop dua produk consumer goods yang butuh prototype 3D printing. Yang pertama spice kit — casing semi-hard ukuran travel kit untuk tempat bumbu perjalanan (material ABS/PETG cukup untuk awal). Yang kedua lebih kritis — cooking kit shell, yaitu casing untuk peralatan masak portable yang harus tahan panas. Untuk yang ini saya butuh material Nylon atau Carbon Fibre Composite. Untuk sementara hanya butuh 1–2 piece prototype dulu. Boleh saya tanya — apakah kalian punya material Nylon atau CF? Berapa estimasi harga per piece untuk ukuran kira-kira 20–25cm? Dan apakah bisa bantu buatkan file 3D juga kalau saya kirim referensi gambar? Desainnya lagi saya siapkan dan akan segera saya kirim. Terima kasih! 🙏
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MESSAGE 3 OF 4
+TO: Eureka Indonesia
+NUMBER: +62 81317098975
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Halo kak, selamat sore! Saya [NAMA], entrepreneur yang lagi di Bandung. Saya lagi cari vendor yang bisa bantu buat prototype untuk produk saya — sebuah spice kit, semacam tempat bumbu masak khusus perjalanan. Bentuknya saya inginkan pakai casing semi-hard (bukan softcase biasa), mirip travel kit toiletries tapi lebih rigid — materialnya bisa EVA hard shell, ABS, atau Polycarbonate. Di dalamnya nanti ada tray/insert untuk tempat botol bumbu kecil. Untuk tahap ini saya cuma butuh 1–2 piece dulu sebagai prototype. Apakah bisa bantu? Berapa kira-kira biaya untuk buat sample seperti ini, dan berapa lama prosesnya? Desain referensinya lagi saya siapkan dan akan segera saya kirimkan. Terima kasih banyak! 🙏
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MESSAGE 4 OF 4
+TO: Intama Bagmaker
+NUMBER: +62 82240458686
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Halo kak, selamat sore! Saya [NAMA], entrepreneur yang lagi di Bandung. Saya tertarik untuk buat prototype sebuah spice kit — tempat bumbu perjalanan dalam format travel kit tapi dengan casing semi-hard (bukan softcase). Material yang saya inginkan EVA hard shell atau ABS, dengan insert di dalamnya untuk botol-botol bumbu kecil. Ukurannya sekitar sebesar travel kit toiletries standar. Saya lihat proses kalian ada prototype sample dulu baru final sample — itu cocok banget sama kebutuhan saya. Untuk sekarang saya butuh 1–2 piece prototype dulu untuk lihat bentuk dan material. Apakah bisa bantu? Berapa estimasi harga untuk sample seperti ini, dan berapa lama? Desain referensinya akan saya kirimkan segera setelah saya dapat balasan ya. Makasih banyak kak! 🙏
+
+
+=====================================
+END OF MESSAGES
+=====================================
